@@ -48,10 +48,12 @@ class Game():
     if obj1.exploded:
       return False
     else:
-      offset_x = obj2.x - 25 - obj1.x
-      offset_y = obj2.y - 25 - obj1.y
+      offset_x = obj2.x - obj1.x
+      offset_y = obj2.y - obj1.y
       if type(obj2) == Player:
         if obj2.shield_on:
+          offset_x = obj2.x - 25 - obj1.x
+          offset_y = obj2.y - 25 - obj1.y
           return obj1.mask.overlap(obj2.shield_animation.masks[obj2.shield_animation_index], (offset_x, offset_y)) != None
         else:
           return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
