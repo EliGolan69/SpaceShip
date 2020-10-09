@@ -11,6 +11,7 @@ class GameLevel():
     self._LaserLeftPowerUpTimer = 0
     self._LaserRightPowerUpTimer = 0
     self._ShieldPowerUpTimer = 0
+    self._ClusterBombPowerUpTimer = 0
     self._showStartLevel = SHOW_START_LEVEL_INDEX # index on the Y
     self.waveLength = WAVE_LENGTH
     self.startOfGame = True
@@ -102,13 +103,13 @@ class GameLevel():
     if self._level > 1 and self._level <=5:
       powerUp -= 0
     elif self._level > 5 and self._level <=8:
-      powerUp -= 50
-    elif self._level > 8 and self._level <=10:
       powerUp -= 100
-    elif self._level > 10 and self._level <=13:
+    elif self._level > 8 and self._level <=10:
       powerUp -= 150
+    elif self._level > 10 and self._level <=13:
+      powerUp -= 250
     elif self._level > 13 and self._level <=15:
-      powerUp -= 200
+      powerUp -= 300
     else:
       powerUp = 0
 
@@ -228,3 +229,27 @@ class GameLevel():
       powerUp = 10
 
     return powerUp
+
+
+  def ClusterBombPowerUp(self):
+    self._ClusterBombPowerUpTimer += 1
+
+    powerUp = 0
+    if self._level > 1 and self._level <=5:
+      powerUp -= 0
+    elif self._level > 5 and self._level <=8:
+      powerUp -= 30
+    elif self._level > 8 and self._level <=10:
+      powerUp -= 50
+    elif self._level > 10 and self._level <=13:
+      powerUp -= 100
+    elif self._level > 13 and self._level <=15:
+      powerUp -= 130
+    else:
+      powerUp = -150
+
+    if self._ClusterBombPowerUpTimer > (POWER_UP_CLUSTER_BOMB_CREATE - powerUp):
+      self._ClusterBombPowerUpTimer = 0
+      return True
+    else:
+      return False

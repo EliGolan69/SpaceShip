@@ -12,6 +12,15 @@ class Enemy(Ship):
   def move(self):
     self.y += self.speed
 
+  def draw(self, window):
+    if not self.exploded:
+      window.blit(self.image, (self.x, self.y))
+    elif self.exploded:
+      self.explod_animation.StartAnimation(self.x, self.y, window)
+
+    for weapon in self.weapons:
+        weapon.draw(window)
+
   def shoot(self):
     if self.exploded:
       pass

@@ -5,7 +5,7 @@ import random
 import Ships
 from Players import *
 import Enemys
-from PowerUp import Health, Rockets, FullLife, AddShot, Shield
+from PowerUp import Health, Rockets, FullLife, AddShot, Shield, ClusterBombPowerUp
 from Images import GameIamge
 from GameLevels import GameLevel
 from Sound import Sound
@@ -30,6 +30,7 @@ class Game():
     self.nextLevelFont = self.myGame.font.SysFont("comicsans", 120)
     self.enemies = []
     self.powerUps = []
+    self.animation_objs = []
     self.player = Player(x = 300, y = 630, player_game = self.myGame, ship_type = PLAYER_SHIP, laser_type = PLAYER_LASER, player_sound = self.gameSound)
     self.playerSpeed = PLAYER_SPEED
     self.run = True
@@ -127,7 +128,8 @@ class Game():
       else:
         self.gameLevel.SetStartOfGame(False)
 
-      for i in range(self.gameLevel.GetWaveLength()):
+      enemy_wave_len = self.gameLevel.GetWaveLength()
+      for i in range(enemy_wave_len):
         enemy = Enemys.Enemy(random.randrange(50, self.gameWidth - 100), random.randrange(-1100, -300), self.myGame,
                              random.choice(SHIP_LIST), random.choice(LASER_LIST),self.gameSound)
         self.enemies.append(enemy)
@@ -153,6 +155,10 @@ class Game():
       powerUp = Shield(random.randrange(50, self.gameWidth - 100), random.randrange(-300, -10), self.myGame, self.mainWindows, self.gameSound)
       self.powerUps.append(powerUp)
 
+    if self.gameLevel.ClusterBombPowerUp():
+      powerUp = ClusterBombPowerUp(random.randrange(50, self.gameWidth - 100), random.randrange(-300, -10), self.myGame, self.mainWindows, self.gameSound)
+      self.powerUps.append(powerUp)
+
   def _PowerUpAction(self):
     self.player.SetShieldTimeCounter(1)
     for powerUp in self.powerUps[:]:
@@ -165,7 +171,7 @@ class Game():
             self.powerUps.remove(powerUp)"""
 
       if powerUp.collide(powerUp, self.player):
-        self.gameSound.PlaySoundEffect(FILE_NAME_POWER_UP_EFFECT, 0.2)
+        self.gameSound.PowerUpEffect()
         powerUp.Ability(self.player)
         if powerUp.canDestroy:
           self.powerUps.remove(powerUp)
@@ -226,6 +232,7 @@ class Game():
           self._redraw_window_with_extra_data()
           self._PowerUpAction()
           self.player.move_lasers(self.enemies)
+          self.player.move_ClusterSingleBomb(self.enemies)
           self.gameGUI.CheckEvents(self.myGame, self.mainWindows)
           self.gameGUI.RunOnClickEvents()
         else:

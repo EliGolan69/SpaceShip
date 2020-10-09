@@ -20,6 +20,16 @@ class Sound():
     self.rocket_ship = sound_game.mixer.Sound(files_path + FILE_NAME_ROCKET_EFFECT)
     self.rocket_ship.set_volume(0.2)
 
+    self.rocket_launch = sound_game.mixer.Sound(files_path + FILE_NAME_ROCKET_LAUNCH_EFFECT)
+    self.rocket_launch.set_volume(0.1)
+
+    self.explosions = sound_game.mixer.Sound(files_path + FILE_NAME_EXPLOSIONS_EFFECT)
+    self.explosions.set_volume(0.4)
+
+    self.power_up = sound_game.mixer.Sound(files_path + FILE_NAME_POWER_UP_EFFECT)
+    self.power_up.set_volume(0.2)
+
+
   def get_sound_effect(self):
       return self.sound_effect
 
@@ -48,3 +58,14 @@ class Sound():
     if self.sound_effect:
       self.rocket_ship.play()
 
+  def RocketLaunchEffect(self):
+    if self.sound_effect:
+      self.rocket_launch.play()
+
+  def ExplosionsEffect(self):
+    if self.sound_effect:
+      pass #  self.explosions.play()
+
+  def PowerUpEffect(self):
+    if self.sound_effect:
+      self.power_up.play()

@@ -23,7 +23,7 @@ class ExtraShip(Ship):
   def shoot(self):
      if self.cool_down_counter == 0:
        if self.numberOfRocket >= 0:
-         weapon = Laser(self.x + int(self.imageWidth/2), self.y, self.extra_ship_game, self.weapon_type)
+         weapon = Rocket(self.x + int(self.imageWidth/2), self.y, self.extra_ship_game, self.weapon_type)
          self.extra_ship_sound.RockketShipEffect()
          self.weapons.append(weapon)
          self.cool_down_counter = 1

@@ -48,36 +48,50 @@ class PowerUpContainer():
     def __init__(self, game_power_up, power_up_type):
         self.power_up_type = power_up_type
         self.game_power_up = game_power_up
-        self.HEALTH = GameIamge(self.game_power_up, IMAGE_FOLDER+ IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_HEALTH)
-        self.ROCKETS = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_ROCKETS)
-        self.LIFE = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_LIFE)
-        self.ADD_SHOT = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_ADD_SHOT)
-        self.SHIELD = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_SHIELD)
+        if self.power_up_type == POWER_UP_HEALTH:
+          self.HEALTH = GameIamge(self.game_power_up, IMAGE_FOLDER+ IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_HEALTH)
+        elif self.power_up_type == POWER_UP_ROCKETS:
+          self.ROCKETS = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_ROCKETS)
+        elif self.power_up_type == POWER_UP_LIFE:
+          self.LIFE = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_LIFE)
+        elif self.power_up_type == POWER_UP_ADD_SHOT:
+          self.ADD_SHOT = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_ADD_SHOT)
+        elif self.power_up_type == POWER_UP_SHIELD:
+          self.SHIELD = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_SHIELD)
+        elif self.power_up_type == POWER_UP_CLUSTER_BOMB:
+          self.CLUSTER_BOMB = GameIamge(self.game_power_up, IMAGE_FOLDER + IMAGE_FOLDER_POWER_UP, FILE_NAME_POWER_UP_CLUSTER_BOMB)
 
     def GetPowerUpImage(self):
-        self.powerupTypes = {
-            POWER_UP_HEALTH: (self.HEALTH.LoadGameIamge()),
-            POWER_UP_ROCKETS: (self.ROCKETS.LoadGameIamge()),
-            POWER_UP_LIFE: (self.LIFE.LoadGameIamge()),
-            POWER_UP_ADD_SHOT: (self.ADD_SHOT.LoadGameIamge()),
-            POWER_UP_SHIELD: (self.SHIELD.LoadGameIamge()),
-
-        }
-        return self.powerupTypes[self.power_up_type]
+        if self.power_up_type == POWER_UP_HEALTH:
+          return self.HEALTH.LoadGameIamge()
+        elif self.power_up_type == POWER_UP_ROCKETS:
+          return self.ROCKETS.LoadGameIamge()
+        elif self.power_up_type == POWER_UP_LIFE:
+          return self.LIFE.LoadGameIamge()
+        elif self.power_up_type == POWER_UP_ADD_SHOT:
+          return self.ADD_SHOT.LoadGameIamge()
+        elif self.power_up_type == POWER_UP_SHIELD:
+          return self.SHIELD.LoadGameIamge()
+        elif self.power_up_type == POWER_UP_CLUSTER_BOMB:
+          return self.CLUSTER_BOMB.LoadGameIamge()
 
     def GetWeaponMask(self):
-        self.powerupTypes = {
-          POWER_UP_HEALTH: (self.HEALTH.MaskFromSurface()),
-          POWER_UP_ROCKETS: (self.ROCKETS.MaskFromSurface()),
-          POWER_UP_LIFE: (self.LIFE.MaskFromSurface()),
-          POWER_UP_ADD_SHOT: (self.ADD_SHOT.MaskFromSurface()),
-          POWER_UP_SHIELD: (self.SHIELD.MaskFromSurface()),
-              }
-        return self.powerupTypes[self.power_up_type]
+        if self.power_up_type == POWER_UP_HEALTH:
+          return self.HEALTH.MaskFromSurface()
+        elif self.power_up_type == POWER_UP_ROCKETS:
+          return self.ROCKETS.MaskFromSurface()
+        elif self.power_up_type == POWER_UP_LIFE:
+          return self.LIFE.MaskFromSurface()
+        elif self.power_up_type == POWER_UP_ADD_SHOT:
+          return self.ADD_SHOT.MaskFromSurface()
+        elif self.power_up_type == POWER_UP_SHIELD:
+          return self.SHIELD.MaskFromSurface()
+        elif self.power_up_type == POWER_UP_CLUSTER_BOMB:
+          return self.CLUSTER_BOMB.MaskFromSurface()
 
 
 class Health(PowerUp):
-   def __init__(self,  x, y, power_up_game, sound, health=15):
+   def __init__(self,  x, y, power_up_game, sound, health=25):
      super().__init__( x, y, power_up_game, POWER_UP_HEALTH, sound)
      self.sound = sound
      self.name = POWER_UP_HEALTH
@@ -124,7 +138,6 @@ class Rockets(PowerUp):
     self.ShipInProgress = False
     self.windows = windows
 
-
   def Ability(self, obj):
     self.StartShipAttack = True
     if self.ShipInProgress:
@@ -136,7 +149,6 @@ class Rockets(PowerUp):
       self.x = -500
       self.y = -500
       self.myShip = ExtraShip(randrange(0, 100), self.screenHeight - 20, self.power_up_game, EXTRA_SHIP, EXTRA_SHIP_ROCKET, self.sound, 500)
-
 
   def DrawAbility(self, windows, EnemyObj):
     if self.ShipInProgress:
@@ -163,7 +175,6 @@ class AddShot(PowerUp):
     self.windows = windows
     self.canDestroy = True
 
-
   def Ability(self, obj):
     obj.extra_left_shot += 1
     obj.extra_right_shot += 1
@@ -178,7 +189,19 @@ class Shield(PowerUp):
     self.windows = windows
     self.canDestroy = True
 
-
   def Ability(self, obj):
     obj.shield_on = True
     obj.shield_time_counter = SHIELD_TIME
+
+
+class ClusterBombPowerUp(PowerUp):
+  def __init__(self, x, y, power_up_game, windows, sound):
+    super().__init__(x, y, power_up_game, POWER_UP_CLUSTER_BOMB, sound)
+    self.sound = sound
+    self.name = POWER_UP_CLUSTER_BOMB
+    self.windows = windows
+    self.canDestroy = True
+
+  def Ability(self, obj):
+    obj.cluster_bomb_on = True
+    obj.shoot()

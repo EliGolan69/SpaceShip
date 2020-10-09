@@ -1,7 +1,7 @@
 from Ships import Ship
-from Weapons import Laser, Laser_Left, Laser_Rigth
+from Weapons import Laser, Laser_Left, Laser_Rigth, ClusterBomb, ClusterBombSingle
 from Const import *
-from ExplosionAnimation import PlayerExplosionAnimation
+from ExplosionAnimation import PlayerExplosionAnimation, RocketExplosionAnimation
 from Images import GameIamge
 
 
@@ -9,6 +9,7 @@ class Player(Ship):
   def __init__(self, x, y, player_game, ship_type, laser_type, player_sound, health=100):
     super().__init__(x, y, player_game, ship_type, laser_type, player_sound, health)
     self.playergame = player_game
+    self.player_sound = player_sound
     self.max_health = health
     self.extra_shot = 0
     self.speed = PLAYER_SPEED
@@ -25,6 +26,8 @@ class Player(Ship):
     self.shield_animation = ShieldAnimation(player_game, x, y)
     self.shield_animation_index = 0
     self.shield_show_time_counter = SHIELD_SHOW_TIME
+    self.cluster_bomb_on = False
+    self.cluster_bomb_single = []
 
   def SetShieldTimeCounter(self, value):
     self.shield_time_counter -= 1
@@ -36,27 +39,58 @@ class Player(Ship):
         self.cool_down -= remove_cool_down
 
   def shoot(self):
-    if self.cool_down_counter == 0:
-      self.ship_sound.LaserePlayerEffect()
-      weapon = Laser(self.x + int(self.imageWidth / 2), self.y, self.ship_game, self.weapon_type)
+    if self.cluster_bomb_on:
+      self.cluster_bomb_on = False
+      self.ship_sound.RocketLaunchEffect()
+      weapon = ClusterBomb(self.x + int(self.imageWidth / 2), self.y, self.ship_game, self.player_sound)
       self.weapons.append(weapon)
+    else:
+      if self.cool_down_counter == 0:
+        self.ship_sound.LaserePlayerEffect()
+        weapon = Laser(self.x + int(self.imageWidth / 2), self.y, self.ship_game, self.weapon_type)
+        self.weapons.append(weapon)
 
-      next_left_weapon = 10
-      for shot in range(self.extra_left_shot):
-        weapon1 = Laser_Left(self.x + int(self.imageWidth / 2) - (shot * next_left_weapon), self.y, self.ship_game, PLAYER_LASER_LEFT_RED)
-        self.weapons.append(weapon1)
+        next_left_weapon = 10
+        for shot in range(self.extra_left_shot):
+          weapon1 = Laser_Left(self.x + int(self.imageWidth / 2) - (shot * next_left_weapon), self.y, self.ship_game, PLAYER_LASER_LEFT_RED)
+          self.weapons.append(weapon1)
 
-      for shot in range(self.extra_right_shot):
-        weapon1 = Laser_Rigth(self.x + int(self.imageWidth / 2) + (shot * next_left_weapon), self.y, self.ship_game, PLAYER_LASER_RIGHT_RED)
-        self.weapons.append(weapon1)
+        for shot in range(self.extra_right_shot):
+          weapon1 = Laser_Rigth(self.x + int(self.imageWidth / 2) + (shot * next_left_weapon), self.y, self.ship_game, PLAYER_LASER_RIGHT_RED)
+          self.weapons.append(weapon1)
 
+        self.cool_down_counter = 1
 
-      self.cool_down_counter = 1
+  def get_cluster_bomb_weapon(self):
+    return self.cluster_bomb_single
+
+  def move_ClusterSingleBomb(self, EnemyObjs):
+   # self.cooldown()
+
+    for cluster_bomb in self.cluster_bomb_single:
+      cluster_bomb.move(self.weapon_speed)
+
+      if cluster_bomb.off_screen(self.GetScreenSizeH()):
+        self.cluster_bomb_single.remove(cluster_bomb)
+      else:
+        for obj in EnemyObjs:
+          if cluster_bomb.collision(obj):
+            obj.exploded = True
+            if cluster_bomb in self.cluster_bomb_single:
+              self.cluster_bomb_single.remove(cluster_bomb)
 
 
   def move_lasers(self, EnemyObjs):
     self.cooldown()
     for weapon in self.weapons:
+      if (type(weapon) == ClusterBomb):
+        if weapon.exploded:
+          if weapon.start_cluster_single_bomb:
+            continue
+          else:
+            self.create_cluster_bomb_single(weapon.x, weapon.y)
+            weapon.start_cluster_single_bomb = True
+
       if (type(weapon) == Laser_Left):
         weapon.move(self.weapon_speed, self.weapon_speed_x)
       elif (type(weapon) == Laser_Rigth):
@@ -69,9 +103,17 @@ class Player(Ship):
       else:
         for obj in EnemyObjs:
           if weapon.collision(obj):
+            if (type(weapon) == ClusterBomb):
+              obj.explod_animation = RocketExplosionAnimation(obj.ship_game, obj.ship_sound)
+              self.create_cluster_bomb_single(obj.x, obj.y)
             obj.exploded = True
             if weapon in self.weapons:
               self.weapons.remove(weapon)
+
+  def create_cluster_bomb_single(self, x, y):
+    for index in range(30):
+      cluster_bomb = ClusterBombSingle(x, y, self.ship_game, index)
+      self.cluster_bomb_single.append(cluster_bomb)
 
   def draw(self, window):
     if not self.exploded:
@@ -99,6 +141,8 @@ class Player(Ship):
     for weapon in self.weapons:
         weapon.draw(window)
 
+    for cluster_bomb in self.cluster_bomb_single:
+        cluster_bomb.draw(window)
 
   def healthbar(self, window):
     if self.health < 0:

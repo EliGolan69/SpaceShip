@@ -5,8 +5,10 @@ IMAGE_FOLDER_ENEMY = "\\enemy"
 IMAGE_FOLDER_POWER_UP = "\\powerup"
 IMAGE_FOLDER_MUSIC = "\\sound"
 IMAGE_FOLDER_GUI = "\\gui"
-IMAGE_FOLDER_LASER_EXPLOSIONS = "assets\\laser small explosions"
-IMAGE_FOLDER_BIG_EXPLOSIONS = "assets\\big explosions"
+IMAGE_FOLDER_LASER_EXPLOSIONS = "assets\\animation\\laser small explosions"
+IMAGE_FOLDER_BIG_EXPLOSIONS = "assets\\animation\\big explosions"
+IMAGE_FOLDER_ROCKET_FLAME = "assets\\animation\\rocket flame"
+IMAGE_FOLDER_ROCKET_EXPLOSIONS = "assets\\animation\\rocket explosions"
 
 # GUI File names
 FILE_NAME_HAND_POINTER = "pointer.png"
@@ -54,6 +56,8 @@ FILE_NAME_LASER_EFFECT = "\\laser_player.ogg"
 FILE_NAME_POWER_UP_EFFECT = "\\powerup.wav"
 FILE_NAME_ROCKET_EFFECT = "\\rocket.wav"
 FILE_NAME_ENEMY_EFFECT = "\\laser_enemy.wav"
+FILE_NAME_ROCKET_LAUNCH_EFFECT = "\\rocket_launch.ogg"
+FILE_NAME_EXPLOSIONS_EFFECT = "\\explosions.ogg"
 
 # Images - Ship
 FILE_NAME_RED_SPACE_SHIP = "ship_red.png"
@@ -71,6 +75,8 @@ FILE_NAME_YELLOW_LASER = "laser_yellow.png"
 FILE_NAME_PALER_LASER = "laser_player.png"
 FILE_NAME_PLAYER_LASER_LEFT_RED = "laser_player_left_red.png"
 FILE_NAME_PLAYER_LASER_RIGHT_RED = "laser_player_right_red.png"
+FILE_NAME_PLAYER_CLUSTER_BOMB = "cluster_bomb.png"
+FILE_NAME_PLAYER_CLUSTER_SINGLE_BOMB = "cluster_bomb_single.png"
 
 # Images - ROCKETS
 FILE_NAME_ROCKETS = "rocket.png"
@@ -80,6 +86,7 @@ FILE_NAME_POWER_UP_ROCKETS = "rockets.png"
 FILE_NAME_POWER_UP_LIFE = "life.png"
 FILE_NAME_POWER_UP_ADD_SHOT = "add_shot.png"
 FILE_NAME_POWER_UP_SHIELD = "shield.png"
+FILE_NAME_POWER_UP_CLUSTER_BOMB = "cluster_bomb.png"
 
 # Images - Background
 FILE_NAME_BACK_GROUND = "background_01.png"
@@ -94,7 +101,7 @@ PLAYER_SHIP = "player_ship"
 EXTRA_SHIP = "extra_ship"
 SHIP_LIST = [RED_SHIP, GREEN_SHIP, BLUE_SHIP, YELLOW_SHIP]
 
-# Laser Names
+# Weapons Names
 RED_LASER = "red_laser"
 GREEN_LASER = "green_laser"
 BLUE_LASER = "blue_laser"
@@ -104,7 +111,8 @@ EXTRA_SHIP_ROCKET = "rocket"
 PLAYER_LASER_ADD_SHOT = "player_add_shot"
 PLAYER_LASER_LEFT_RED = "laser_player_left_red"
 PLAYER_LASER_RIGHT_RED = "laser_player_right_red"
-
+PLAYER_CLUSTER_BOMB = "cluster_bomb"
+PLAYER_CLUSTER_SINGLE_BOMB = "cluster_bomb_single"
 # Animations Files
 
 FILE_NAME_SHIELD_1 = "shield\\shield_f1.png"
@@ -125,6 +133,7 @@ POWER_UP_ADD_SHOT = "add_shot"
 POWER_UP_ADD_SHOT_LEFT = "add_shot_left"
 POWER_UP_ADD_SHOT_RIGHT = "add_shot_left"
 POWER_UP_SHIELD = 'shield'
+POWER_UP_CLUSTER_BOMB = 'cluster_bomb'
 
 # Ship Ver
 SHIP_COOL_DOWN = 20
@@ -135,6 +144,7 @@ POWER_UP_ROCKET_CREATE = 1000
 POWER_UP_LIFE_CREATE = 4200
 POWER_UP_ADD_LASER_CREATE = 6000
 POWER_UP_SHIELD_CREATE = 1333
+POWER_UP_CLUSTER_BOMB_CREATE = 400
 
 # Game var
 ENEMY_WIN_DAMAGE = 1

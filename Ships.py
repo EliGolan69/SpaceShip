@@ -23,9 +23,7 @@ class Ship():
         self.damage = ENEMY_COLLIDE_DAMAGE
         self.speed = 1
         self.exploded = False
-        self.shipSound = Sound(self.ship_game, IMAGE_FOLDER + IMAGE_FOLDER_MUSIC, FILE_NAME_GAME_MUSIC, False)
         self.explod_animation = ExplosionAnimation(ship_game, ship_sound)
-
 
 
     def ChangeCoolDown(self, remove_cool_down):
@@ -82,31 +80,49 @@ class ShipContainer():
     def __init__(self, shipgame, ship_type):
         self.ship_type = ship_type
         self.shipgame = shipgame
-        self.RED_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_RED_SPACE_SHIP)
-        self.GREEN_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_GREEN_SPACE_SHIP)
-        self.BLUE_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_BLUE_SPACE_SHIP)
-        self.YELLOW_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_YELLOW_SPACE_SHIP)
-        self.PLAYER_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_PLAYER_SPACE_SHIP)
-        self.EXTRA_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER + IMAGE_FOLDER_ENEMY, FILE_NAME_EXTRA_SHIP)
+        self.SetShipObj()
+
+
+    def SetShipObj(self):
+        if self.ship_type == RED_SHIP:
+          self.RED_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_RED_SPACE_SHIP)
+        elif self.ship_type == GREEN_SHIP:
+          self.GREEN_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_GREEN_SPACE_SHIP)
+        elif self.ship_type == BLUE_SHIP:
+          self.BLUE_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_BLUE_SPACE_SHIP)
+        elif self.ship_type == YELLOW_SHIP:
+          self.YELLOW_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_YELLOW_SPACE_SHIP)
+        elif self.ship_type == PLAYER_SHIP:
+          self.PLAYER_SPACE_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER+IMAGE_FOLDER_ENEMY, FILE_NAME_PLAYER_SPACE_SHIP)
+        elif self.ship_type == EXTRA_SHIP:
+          self.EXTRA_SHIP = GameIamge(self.shipgame, IMAGE_FOLDER + IMAGE_FOLDER_ENEMY, FILE_NAME_EXTRA_SHIP)
 
     def GetShipImage(self):
-        self.shipTypes = {
-            RED_SHIP: (self.RED_SPACE_SHIP.LoadGameIamge()),
-            GREEN_SHIP: (self.GREEN_SPACE_SHIP.LoadGameIamge()),
-            BLUE_SHIP: (self.BLUE_SPACE_SHIP.LoadGameIamge()),
-            YELLOW_SHIP: (self.YELLOW_SPACE_SHIP.LoadGameIamge()),
-            PLAYER_SHIP: (self.PLAYER_SPACE_SHIP.LoadGameIamge()),
-            EXTRA_SHIP: (self.EXTRA_SHIP.LoadGameIamge()),
-                         }
-        return self.shipTypes[self.ship_type]
+        if self.ship_type == RED_SHIP:
+          return self.RED_SPACE_SHIP.LoadGameIamge()
+        elif self.ship_type == GREEN_SHIP:
+            return self.GREEN_SPACE_SHIP.LoadGameIamge()
+        elif self.ship_type == BLUE_SHIP:
+          return self.BLUE_SPACE_SHIP.LoadGameIamge()
+        elif self.ship_type == YELLOW_SHIP:
+          return self.YELLOW_SPACE_SHIP.LoadGameIamge()
+        elif self.ship_type == PLAYER_SHIP:
+          return self.PLAYER_SPACE_SHIP.LoadGameIamge()
+        elif self.ship_type == EXTRA_SHIP:
+          return self.EXTRA_SHIP.LoadGameIamge()
 
     def GetShipMask(self):
-        self.shipTypes = {
-            RED_SHIP: (self.RED_SPACE_SHIP.MaskFromSurface()),
-            GREEN_SHIP: (self.GREEN_SPACE_SHIP.MaskFromSurface()),
-            BLUE_SHIP: (self.BLUE_SPACE_SHIP.MaskFromSurface()),
-            YELLOW_SHIP: (self.YELLOW_SPACE_SHIP.MaskFromSurface()),
-            PLAYER_SHIP: (self.PLAYER_SPACE_SHIP.MaskFromSurface()),
-            EXTRA_SHIP: (self.EXTRA_SHIP.MaskFromSurface()),
-                         }
-        return self.shipTypes[self.ship_type]
+
+        if self.ship_type == RED_SHIP:
+          return self.RED_SPACE_SHIP.MaskFromSurface()
+        elif self.ship_type == GREEN_SHIP:
+          return self.GREEN_SPACE_SHIP.MaskFromSurface()
+        elif self.ship_type == BLUE_SHIP:
+          return self.BLUE_SPACE_SHIP.MaskFromSurface()
+        elif self.ship_type == YELLOW_SHIP:
+          return self.YELLOW_SPACE_SHIP.MaskFromSurface()
+        elif self.ship_type == PLAYER_SHIP:
+          return self.PLAYER_SPACE_SHIP.MaskFromSurface()
+        elif self.ship_type == EXTRA_SHIP:
+          return self.EXTRA_SHIP.MaskFromSurface()
+
