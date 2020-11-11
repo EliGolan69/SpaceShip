@@ -110,6 +110,7 @@ class Player(Ship):
             if weapon in self.weapons:
               self.weapons.remove(weapon)
 
+
   def create_cluster_bomb_single(self, x, y):
     for index in range(30):
       cluster_bomb = ClusterBombSingle(x, y, self.ship_game, index)

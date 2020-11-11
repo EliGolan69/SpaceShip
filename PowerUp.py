@@ -127,6 +127,8 @@ class FullLife(PowerUp):
     if obj.Power_up_healed_value > 0:
       obj.Power_up_healed = True
 
+    obj.max_health += 30
+
 class Rockets(PowerUp):
   def __init__(self, x, y, power_up_game, windows, sound):
     super().__init__(x, y, power_up_game, POWER_UP_ROCKETS, sound)

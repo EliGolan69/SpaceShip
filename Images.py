@@ -17,7 +17,10 @@ class GameIamge():
     return self.game_image.transform.scale(self.game_image.image.load(self.GetImageGameFile()), (self.scale_width, self.scale_height))
 
   def LoadGameIamge(self):
-    return self.game_image.image.load(self.GetImageGameFile())
+    if os.path.exists(self.GetImageGameFile()):
+      return self.game_image.image.load(self.GetImageGameFile())
+    else:
+      return None
 
   def MaskFromSurface(self):
     return self.game_image.mask.from_surface(self.game_image.image.load(self.GetImageGameFile()))

@@ -2,22 +2,32 @@ from Ships import Ship
 from Weapons import Laser
 from Const import ENEMY_SPEED
 
+
 class Enemy(Ship):
-  def __init__(self, x, y, enemy_game, ship_type, laser_type, enemy_sound,health=100):
+  def __init__(self, x, y, enemy_game, ship_type, laser_type, enemy_sound, path_obj,health=100):
     super().__init__(x, y, enemy_game, ship_type, laser_type, enemy_sound,health)
     self.enemy_game = enemy_game
     self.speed = ENEMY_SPEED
     self.enemy_sound = enemy_sound
+    self.path = path_obj
+    self.animation_ended = False
+    self.x = self.path.start_point_x
+    self.y = self.path.start_point_y
+
+
+  def can_destroy(self):
+      return (self.animation_ended and self.exploded and not self.weapons)
 
   def move(self):
-    self.y += self.speed
+   # self.y += self.speed
+   self.x, self.y = self.path.get_point(self.x, self.y, self.speed)
 
   def draw(self, window):
     if not self.exploded:
       window.blit(self.image, (self.x, self.y))
-    elif self.exploded:
+    else:
       self.explod_animation.StartAnimation(self.x, self.y, window)
-
+      self.animation_ended = self.explod_animation.AnimationEnded()
     for weapon in self.weapons:
         weapon.draw(window)
 

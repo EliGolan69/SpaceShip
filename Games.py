@@ -11,7 +11,7 @@ from GameLevels import GameLevel
 from Sound import Sound
 from GUI import GUIObj
 from ExplosionAnimation import *
-
+import Path
 
 class Game():
   def __init__(self, gameWidth = 0, gameHeight = 0):
@@ -129,9 +129,10 @@ class Game():
         self.gameLevel.SetStartOfGame(False)
 
       enemy_wave_len = self.gameLevel.GetWaveLength()
+      enemy_path = random.randint(0, 8)
       for i in range(enemy_wave_len):
-        enemy = Enemys.Enemy(random.randrange(50, self.gameWidth - 100), random.randrange(-1100, -300), self.myGame,
-                             random.choice(SHIP_LIST), random.choice(LASER_LIST),self.gameSound)
+        enemy = Enemys.Enemy(1, 1, self.myGame,
+                   random.choice(SHIP_LIST), random.choice(LASER_LIST), self.gameSound, Path.get_random_path(enemy_path))
         self.enemies.append(enemy)
 
   def _BuildPowerUps(self):
@@ -180,23 +181,25 @@ class Game():
 
   def _EnemyAction(self):
     for enemy in self.enemies[:]:
-      enemy.move()
+      if enemy.can_destroy():
+        self.enemies.remove(enemy)
+        continue
+
+      if not enemy.exploded:
+        enemy.move()
+        if self.gameLevel.EnemyWeaponShot():
+          enemy.shoot()
+
       enemy.move_lasers(self.player, self.gameHeight, True)
 
-      if self.gameLevel.EnemyWeaponShot():
-        enemy.shoot()
-
       if self._collide(enemy, self.player):
+        enemy.explod_animation = SmallExplosionAnimation(self.myGame, self.gameSound, -50 ,-50)
+        enemy.exploded = True
         if not self.player.shield_on:
-          self.player.health -= enemy.damage
-        self.enemies.remove(enemy)
+          self.player.health -= ENEMY_WIN_DAMAGE
       elif enemy.y + enemy.get_height() > self.gameHeight:
-        if enemy.exploded:
-          self.enemies.remove(enemy)
-        else:
-          if not self.player.shield_on:
-            self.player.health -= ENEMY_WIN_DAMAGE
-          self.enemies.remove(enemy)
+        self.enemies.remove(enemy)
+
 
   def _CheckPlayerLost(self):
     if self.player.health <= 0:

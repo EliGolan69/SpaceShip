@@ -84,9 +84,9 @@ class GameLevel():
     if self._level > 1 and self._level <=2:
       return 1
     elif self._level > 3 and self._level <=4:
-      return 1
+      return 0
     elif self._level > 4 and self._level <=7:
-      return 1
+      return 0
     elif self._level > 8 and self._level <=10:
       return 1
     elif self._level > 10 and self._level <= 13:

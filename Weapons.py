@@ -41,9 +41,15 @@ class Laser():
           offset_y = obj2.y - obj1.y
           return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
+    def _main_player_collision(self, obj):
+        if obj.shield_on:
+          return self._collide_shield(self, obj)
+        else:
+          return self.collide(self, obj)
+
     def collision(self, obj, main_player = False):
         if main_player:
-          return self._collide_shield(self, obj)
+          return self._main_player_collision(obj)
         else:
           return self.collide(self, obj)
 
@@ -54,10 +60,10 @@ class Laser():
 
 
 class Rocket(Laser):
-    def __init__(self, x, y, laser_game, laser_type, damage = 10):
+    def __init__(self, x, y, laser_game, sound, laser_type, damage = 10):
         super().__init__(x, y, laser_game, laser_type)
         if laser_type == EXTRA_SHIP_ROCKET:
-            self.RocketFlameAnimation = RocketFlame(laser_game)
+            self.RocketFlameAnimation = RocketFlame(laser_game, sound)
 
 
     def draw(self, window):
